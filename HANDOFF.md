@@ -219,3 +219,29 @@ State this in the README. It is a demonstrator on synthetic data, not a
 certified product. It has no BAA, no SOC 2, no HITRUST, and has never seen
 PHI. Claiming otherwise fails the first vendor questionnaire and costs more
 credibility than the build earns.
+
+---
+
+## Progress log
+
+**2026-09-19 — Phase 1 complete.** GCP project `prior-auth-fhir-demo`
+(us-central1, billed to 011792-88ACE6-5A25BC) created with a budget
+tripwire at ₹10/50/100/200. Cloud Healthcare API dataset
+(`prior-auth-dataset`) + FHIR R4 store (`prior-auth-fhir-store`) created.
+227 Synthea Massachusetts patients loaded (16 of 244 failed on
+executeBundle's 4500-resource size cap — long-lived patients with deep
+histories; skipped, not worth chasing for a demonstrator). Verified via
+`Patient?_count=500` read-back.
+
+Note: Synthea's default FHIR export nests Coverage as a `contained`
+resource inside ExplanationOfBenefit, not as a standalone resource — and
+its payer taxonomy (Medicare/Medicaid/commercial insurers) won't line up
+with the synthetic policy corpus's plan_id/region scheme from §4 anyway.
+Decision: the simulated provider client (tests/client.py, phase 3) will
+construct its own top-level Coverage resources on submitted Claim
+bundles, scoped to match the hand-authored policy corpus — not rely on
+Synthea's.
+
+Domain layer (app/domain, app/application) scaffolded with all 7 §8
+acceptance tests passing against in-memory fakes (tests/unit/) before
+any cloud resource existed.

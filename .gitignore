@@ -7,4 +7,5 @@ __pycache__/
 *.tfstate
 *.tfstate.backup
 .terraform/
-synthea/output/
+synthea/output*/
+synthea/*.jar
